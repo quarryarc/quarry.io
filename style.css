@@ -1,0 +1,29 @@
+#bigsearch{
+    width:80%;
+}
+#container{width:80%;
+    border:3px solid black;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #f6f6ef;
+    padding:3%;
+}
+.cell{
+    width:30%;
+    display: inline-block;
+    border: 2px solid black;
+    padding:1%;
+}
+footer{
+    padding: 1%;
+    border-top: 3px solid #ffbb33;
+}
+nav>ul{list-style: none; padding: 1%; background-color: #ffbb33;}
+nav li{
+    display:inline;
+    border-right: 1px solid black;
+    padding:1%;
+    margin:1%;
+    vertical-align: super;
+}
+#brand{font-family: veranda}

@@ -1,3 +1,6 @@
+body{
+    font-family: 'Source Sans Pro', 'Lucida Grande', sans-serif;
+}
 #bigsearch{
     width:80%;
 }
@@ -17,6 +20,7 @@
 footer{
     padding: 1%;
     border-top: 3px solid #ffbb33;
+    margin-top: 1%;
 }
 nav>ul{list-style: none; padding: 1%; background-color: #ffbb33;}
 nav li{
@@ -27,3 +31,39 @@ nav li{
     vertical-align: super;
 }
 #brand{font-family: veranda}
+#instructions{
+    width:75%;
+    display: inline-block;
+
+}
+#stoneSignature{
+    width:20%;
+    display:inline-block;
+    border-left: 2px solid #ffbb33;
+    padding:1%;
+}
+.avatar{
+    display: inline-block;
+    width: 40px;
+}
+.codebox{
+display:inline-block;
+    background: none repeat scroll 0% 0% #444;
+    color:#f3f3f3;
+    font-family: monospace;
+    font-weight: normal;
+    padding:1%;
+}
+hr{
+    border: 0;
+    border-bottom: 1px dashed #ffbb33;
+    
+}
+a{
+    
+    color: #0000ff;
+    font-family: monospace;
+    font-weight: bolder;
+}
+none repeat scroll 0% 0% #444
+Source Sans Pro','Lucida Grande',sans-serif

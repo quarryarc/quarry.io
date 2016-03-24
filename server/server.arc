@@ -6,19 +6,36 @@
 (load "./server/stones/dispatch/dispatch.arc")
 (load "./server/stones/dispatch/http.arc")
 
+(defpath /hello (req)  (prs "hello" req!ip "you are visiting" req!path)) ;; for testing
+;;Website
 (defpath || req (pr "welcome welcome"))
-(defpath /hello (req)  (prs "hello" req!ip "you are visiting" req!path))
-;;(defop masons)
-;;(defop stones)
+(defpath /documentation req)
+(defpath /stones req)
+(defpath /masons req)
 
+(def lookupStone (stone-name)(
+  ;;if stone in stones return stone-info else pr "Sorry couldn't find that stone"
+  )
+) 
+(def findMason (mason-name)(
+  ;;if mason in masons return mason else pr "Sorry couldn't find that mason"
+  )
+  
+)
+(def getStone (stone-name)(
+  ;;if stone in stones return stone-info else pr "Sorry couldn't find that stone"
+  ;;++ stone-info.downloads
+  )
+) 
+;;API
 (defpath /createmason (req)
       
-      (prs "We just made this guy into a mason: " ) ;;(alref req!args "username"))    
+      (prn "We just made this guy into a mason: " (alref req!args "username"))   
 )
 (defpath /createstone req)
 (defpath /getStone req)
-(defpath info req)
-(defpath documentation req)
+(defpath /info req)
+
 
 (= hpwfile*   (+ srvdir* "hpw")
    emailfile* (+ srvdir* "emails")

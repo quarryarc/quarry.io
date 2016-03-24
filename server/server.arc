@@ -3,21 +3,22 @@
 ;;  web.arc
 ;;  srv.arc
 ;;  
-(require "server/stones/app.arc")
-(require "server/stones/srv.arc")
+(load "./server/stones/dispatch/dispatch.arc")
+(load "./server/stones/dispatch/http.arc")
 
-(defop || req (pr "welcome welcome"))
+(defpath || req (pr "welcome welcome"))
+(defpath /hello (req)  (prs "hello" req!ip "you are visiting" req!path))
 ;;(defop masons)
 ;;(defop stones)
 
-(defop createmason req
-    handle-post
-
-    )
-(defop createstone req)
-(defop getStone req)
-(defop info req)
-(defop documentation req)
+(defpath /createmason (req)
+      
+      (prs "We just made this guy into a mason: " ) ;;(alref req!args "username"))    
+)
+(defpath /createstone req)
+(defpath /getStone req)
+(defpath info req)
+(defpath documentation req)
 
 (= hpwfile*   (+ srvdir* "hpw")
    emailfile* (+ srvdir* "emails")
@@ -28,21 +29,24 @@
 )
 
 (def hack ((o port 8080))
-  (load-userinfo)
-  (load-stones)
-  (serve port)
+  ;;(load-userinfo)
+  ;;(load-stones)
+  (prn "quarry Server up and running")
+  (start-httpd port)
 )
 
-(def load-userinfo ()
-  (= hpasswords*   (safe-load-table hpwfile*)
-     emails*       (safe-load-table emailfile*)
-     openids*      (safe-load-table oidfile*)
-     admins*       (map string (errsafe (readfile adminfile*)))
-     cookie->user* (safe-load-table cookfile*))
-  (maptable (fn (k v) (= (user->cookie* v) k))
-            cookie->user*))
-(def load-stones ()
-    (= stones* (safe-load-table stone-registry*))
-    
-)
+;;(def load-userinfo ()
+;;  (= hpasswords*   (safe-load-table hpwfile*)
+;;     emails*       (safe-load-table emailfile*)
+;;     openids*      (safe-load-table oidfile*)
+;;     admins*       (map string (errsafe (readfile adminfile*)))
+;;     cookie->user* (safe-load-table cookfile*))
+;;  (maptable (fn (k v) (= (user->cookie* v) k))
+;;            cookie->user*))
+;;(def load-stones ()
+;;    (= stones* (safe-load-table stone-registry*))
+;;    
+;;)
+
+
 (hack 9999)

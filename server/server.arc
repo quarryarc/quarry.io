@@ -6,7 +6,36 @@
 (load "./server/stones/dispatch/dispatch.arc")
 (load "./server/stones/dispatch/http.arc")
 
-(defpath /hello (req)  (prs "hello" req!ip "you are visiting" req!path)) ;; for testing
+(= userfile* (+ srvdir* "userfile"))
+
+(def load-users ()
+  (= user-info (safe-load-table userfile*) )
+)
+
+;;users={ 
+;;  kinnard: { password: 'secret', email: 'kinnard@bitbox.mx' },
+;;  kartik: { password: 'secretsecret', email: 'ak@gmail.com' }
+;;}
+(deftem newuser username (password nil email nil))
+(def create-acct (username password email)
+  (w/appendfile uf userfile* 
+    (temstore 'newuser '('username username '('password password 'email email)) uf)
+))
+
+(def disable-acct (user)
+  (set-pw user (rand-string 20))
+  (logout-user user))
+
+(def set-pw (user pw)
+"Updates password for 'user'."
+  (= (hpasswords* user) (and pw (shash pw)))
+  (save-table hpasswords* hpwfile*))
+
+(def set-email (user email)
+  (= emails*.user email)
+  (save-table emails* emailfile*))
+
+(defpath /hello (req)  (prn "<form method='POST' action='/createmason'><input type='text' name=username></input> </form>")) ;; for testing
 ;;Website
 (defpath || req (pr "welcome welcome"))
 (defpath /documentation req)
@@ -26,27 +55,29 @@
   ;;if stone in stones return stone-info else pr "Sorry couldn't find that stone"
   ;;++ stone-info.downloads
   )
-) 
+)
+
 ;;API
 (defpath /createmason (req)
-      
-      (prn "We just made this guy into a mason: " (alref req!args "username"))   
+      (create-acct (alref req!args "username") (alref req!args "password") (alref req!args "email"))
+      (pr "Welcome to the lodge " (alref req!args "username") "!")   
 )
 (defpath /createstone req)
 (defpath /getStone req)
 (defpath /info req)
 
 
-(= hpwfile*   (+ srvdir* "hpw")
-   emailfile* (+ srvdir* "emails")
-   oidfile*   (+ srvdir* "openids")
-   adminfile* (+ srvdir* "admins")
-   cookfile*  (+ srvdir* "cooks")
-   stone-registry* (+ srvdir* "registy")
-)
+
+;;(= hpwfile*   (+ srvdir* "hpw")
+;;   emailfile* (+ srvdir* "emails")
+;;   oidfile*   (+ srvdir* "openids")
+;;   adminfile* (+ srvdir* "admins")
+;;   cookfile*  (+ srvdir* "cooks")
+;;   stone-registry* (+ srvdir* "registy")
+;;)
 
 (def hack ((o port 8080))
-  ;;(load-userinfo)
+  (load-users)
   ;;(load-stones)
   (prn "quarry Server up and running")
   (start-httpd port)
@@ -64,6 +95,8 @@
 ;;    (= stones* (safe-load-table stone-registry*))
 ;;    
 ;;)
+
+
 
 
 (hack 9999)

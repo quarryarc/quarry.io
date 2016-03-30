@@ -9,18 +9,27 @@
 (= userfile* (+ srvdir* "userfile"))
 
 (def load-users ()
-  (= user-info (safe-load-table userfile*) )
+  (= users (safe-load-table userfile*) )
 )
 
 ;;users={ 
 ;;  kinnard: { password: 'secret', email: 'kinnard@bitbox.mx' },
 ;;  kartik: { password: 'secretsecret', email: 'ak@gmail.com' }
 ;;}
-(deftem newuser username (password nil email nil))
+;(deftem newuser username (password nil email nil))
+(mac var-key-tab args
+  `(listtab (list ,@(map (fn ((k v))
+                           `(list ,k ,v))
+                         (pair args)))))
 (def create-acct (username password email)
-  (w/appendfile uf userfile* 
-    (temstore 'newuser '('username username '('password password 'email email)) uf)
-))
+  ;; All the shit I had to try to get this working
+  ;(= user-info (obj upassword password uemail email))
+  ;(err (string (tablist user-info)))
+  ;(= users (var-key-tab username user-info))
+  (= (users username) (obj password password email email))
+  (save-table users userfile*)
+
+)
 
 (def disable-acct (user)
   (set-pw user (rand-string 20))
